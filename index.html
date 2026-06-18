@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>休暇管理</title>
+<style>
+/* ===== Reset & Variables ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:   #4F8EF7;
+  --teal:   #34C9A3;
+  --amber:  #F5A623;
+  --violet: #9B6FE0;
+  --red:    #F25C5C;
+  --text:   #1A2340;
+  --text2:  #6B7A99;
+  --text3:  #A0AABE;
+  --bg:     #F0F3FA;
+  --card:   #FFFFFF;
+  --border: #E4E9F2;
+  --nav-h:  68px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+html { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  padding-bottom: calc(var(--nav-h) + var(--safe-b));
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Header ===== */
+.app-header {
+  padding: 20px 20px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.app-header h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  background: linear-gradient(135deg, var(--blue), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header-date {
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 500;
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* ===== Tabs ===== */
+.tab { display: none; animation: fadeIn .2s ease; }
+.tab.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ===== Home ===== */
+#tab-home { padding: 20px 16px; }
+
+.home-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Leave Card */
+.leave-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(26,35,64,.07);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.leave-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  border-radius: 20px 0 0 20px;
+}
+.leave-card.blue::before   { background: linear-gradient(180deg, #4F8EF7, #7AADFF); }
+.leave-card.teal::before   { background: linear-gradient(180deg, #34C9A3, #5EDDBE); }
+.leave-card.amber::before  { background: linear-gradient(180deg, #F5A623, #FFBE57); }
+.leave-card.violet::before { background: linear-gradient(180deg, #9B6FE0, #B896F5); }
+
+/* Ring */
+.ring-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+.ring-wrap svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: var(--border); stroke-width: 7; }
+.ring-fill  { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+.ring-fill.blue   { stroke: url(#grad-blue); }
+.ring-fill.teal   { stroke: url(#grad-teal); }
+.ring-fill.amber  { stroke: url(#grad-amber); }
+.ring-fill.violet { stroke: url(#grad-violet); }
+.ring-fill.red    { stroke: url(#grad-red); }
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-num {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--text);
+}
+.ring-unit {
+  font-size: 10px;
+  color: var(--text3);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+/* Card Body */
+.card-body { flex: 1; min-width: 0; }
+.card-name  { font-size: 15px; font-weight: 700; color: var(--text); }
+.card-sub   { font-size: 12px; color: var(--text3); margin-top: 1px; }
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+.stat-item { }
+.stat-val  { font-size: 13px; font-weight: 700; color: var(--text); }
+.stat-lbl  { font-size: 10px; color: var(--text3); margin-top: 1px; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  margin-top: 10px;
+}
+.status-badge.ok     { background: #EAF7F3; color: #1DB87D; }
+.status-badge.warn   { background: #FFF5E5; color: #D4850A; }
+.status-badge.danger { background: #FFF0F0; color: var(--red); }
+.status-badge::before { content: '●'; font-size: 8px; }
+
+/* ===== Use Tab ===== */
+#tab-use { padding: 20px 16px; }
+
+.use-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 20px rgba(26,35,64,.07);
+}
+.use-card h2 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+/* Type Selector */
+.type-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.type-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--bg);
+}
+.type-option.selected {
+  border-color: var(--blue);
+  background: #EEF4FF;
+}
+.type-option input[type="radio"] { display: none; }
+.type-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.type-option.selected .type-dot {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.type-option-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.type-option-sub   { font-size: 12px; color: var(--text3); }
+
+/* Form Fields */
+.field-row { margin-bottom: 16px; }
+.field-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 7px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.field-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--card);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(79,142,247,.12);
+}
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card);
+  transition: border-color .15s, box-shadow .15s;
+}
+.amount-row:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(79,142,247,.12);
+}
+.amount-btn {
+  width: 48px; height: 48px;
+  border: none; background: none; cursor: pointer;
+  font-size: 22px; color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .1s;
+}
+.amount-btn:active { background: var(--bg); }
+.amount-input {
+  flex: 1;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  outline: none;
+  padding: 10px 0;
+  background: transparent;
+  -webkit-appearance: none;
+}
+.amount-unit {
+  font-size: 14px;
+  color: var(--text3);
+  padding-right: 16px;
+  font-weight: 600;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue), #7AADFF);
+  box-shadow: 0 6px 20px rgba(79,142,247,.35);
+  transition: transform .1s, box-shadow .1s;
+  letter-spacing: .02em;
+  margin-top: 4px;
+}
+.submit-btn:active {
+  transform: scale(.98);
+  box-shadow: 0 3px 12px rgba(79,142,247,.3);
+}
+
+/* ===== Settings Tab ===== */
+#tab-settings { padding: 20px 16px; }
+
+.settings-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 0 4px 8px;
+}
+.settings-section-title + .settings-section-title { margin-top: 20px; }
+
+.settings-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 12px rgba(26,35,64,.05);
+}
+.settings-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.settings-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.settings-icon.blue   { background: #EEF4FF; }
+.settings-icon.teal   { background: #E6FAF5; }
+.settings-icon.amber  { background: #FFF6E5; }
+.settings-icon.violet { background: #F3EEFF; }
+.settings-card-name { font-size: 15px; font-weight: 700; }
+
+.settings-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.settings-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 5px;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, var(--teal), #5EDDBE);
+  box-shadow: 0 6px 20px rgba(52,201,163,.3);
+  margin-top: 4px;
+  transition: transform .1s;
+  letter-spacing: .02em;
+}
+.save-btn:active { transform: scale(.98); }
+
+.reset-btn {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text3);
+  background: transparent;
+  margin-top: 8px;
+  transition: all .15s;
+}
+.reset-btn:active { border-color: var(--red); color: var(--red); }
+
+/* ===== History Tab ===== */
+#tab-history { padding: 20px 16px; }
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.history-header h2 { font-size: 16px; font-weight: 800; color: var(--text); }
+.history-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text3);
+  background: var(--bg);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.history-item {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 10px rgba(26,35,64,.05);
+}
+.history-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.history-icon.blue   { background: #EEF4FF; }
+.history-icon.teal   { background: #E6FAF5; }
+.history-icon.amber  { background: #FFF6E5; }
+.history-icon.violet { background: #F3EEFF; }
+.history-main { flex: 1; min-width: 0; }
+.history-name { font-size: 14px; font-weight: 700; }
+.history-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.history-right { display: flex; align-items: center; gap: 10px; }
+.history-amount {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--red);
+  white-space: nowrap;
+}
+.del-btn {
+  width: 28px; height: 28px;
+  border: none; background: var(--bg); border-radius: 8px;
+  cursor: pointer; color: var(--text3); font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.del-btn:active { background: #FFF0F0; color: var(--red); }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px 40px;
+  color: var(--text3);
+}
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; font-weight: 600; }
+.empty-state small { font-size: 12px; margin-top: 4px; display: block; }
+
+/* ===== Toast ===== */
+#toast {
+  position: fixed;
+  bottom: calc(var(--nav-h) + var(--safe-b) + 16px);
+  left: 50%; transform: translateX(-50%) translateY(8px);
+  background: rgba(26,35,64,.92);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 200;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== Bottom Nav ===== */
+nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--nav-h) + var(--safe-b));
+  background: rgba(255,255,255,.92);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding-bottom: var(--safe-b);
+}
+.nav-btn {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text3);
+  font-size: 10px;
+  font-weight: 700;
+  transition: color .15s;
+  padding-top: 4px;
+}
+.nav-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  transition: background .15s, transform .15s;
+}
+.nav-btn.active { color: var(--blue); }
+.nav-btn.active .nav-icon {
+  background: #EEF4FF;
+  transform: scale(1.05);
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Gradient Defs (hidden) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="grad-blue"  x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4F8EF7"/>
+      <stop offset="100%" stop-color="#7AADFF"/>
+    </linearGradient>
+    <linearGradient id="grad-teal"  x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34C9A3"/>
+      <stop offset="100%" stop-color="#5EDDBE"/>
+    </linearGradient>
+    <linearGradient id="grad-amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F5A623"/>
+      <stop offset="100%" stop-color="#FFBE57"/>
+    </linearGradient>
+    <linearGradient id="grad-red"    x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F25C5C"/>
+      <stop offset="100%" stop-color="#FF8A8A"/>
+    </linearGradient>
+    <linearGradient id="grad-violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9B6FE0"/>
+      <stop offset="100%" stop-color="#B896F5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- Header -->
+<header class="app-header">
+  <h1>休暇管理</h1>
+  <div class="header-date" id="header-date"></div>
+</header>
+
+<!-- ===== HOME ===== -->
+<div id="tab-home" class="tab active">
+  <div class="home-grid" id="cards-container"></div>
+</div>
+
+<!-- ===== USE ===== -->
+<div id="tab-use" class="tab">
+  <div class="use-card">
+    <h2>休暇を記録する</h2>
+
+    <div class="type-selector" id="type-selector">
+      <label class="type-option selected" onclick="selectType(this,'paid_days')">
+        <input type="radio" name="leave-type" value="paid_days" checked>
+        <div class="type-dot"></div>
+        <div>
+          <div class="type-option-label">有給休暇（日・半日単位）</div>
+          <div class="type-option-sub">1日 / 半日（0.5日）。半日×2回で1日消化</div>
+        </div>
+      </label>
+      <label class="type-option" onclick="selectType(this,'paid_hours')">
+        <input type="radio" name="leave-type" value="paid_hours">
+        <div class="type-dot"></div>
+        <div>
+          <div class="type-option-label">有給休暇（時間単位）</div>
+          <div class="type-option-sub">1時間から記録できます</div>
+        </div>
+      </label>
+      <label class="type-option" onclick="selectType(this,'nursing_days')">
+        <input type="radio" name="leave-type" value="nursing_days">
+        <div class="type-dot"></div>
+        <div>
+          <div class="type-option-label">子の看護休暇（日単位）</div>
+          <div class="type-option-sub">1日単位で記録できます</div>
+        </div>
+      </label>
+      <label class="type-option" onclick="selectType(this,'nursing_hours')">
+        <input type="radio" name="leave-type" value="nursing_hours">
+        <div class="type-dot"></div>
+        <div>
+          <div class="type-option-label">子の看護休暇（時間単位）</div>
+          <div class="type-option-sub">1時間単位で記録できます</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label" id="amount-label">使用日数</div>
+      <div class="amount-row">
+        <button class="amount-btn" onclick="changeAmount(-1)">−</button>
+        <input class="amount-input" type="number" id="use-amount" value="1" min="0.5" step="0.5">
+        <button class="amount-btn" onclick="changeAmount(1)">＋</button>
+        <span class="amount-unit" id="amount-unit">日</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">日付</div>
+      <input class="field-input" type="date" id="use-date">
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">メモ（任意）</div>
+      <input class="field-input" type="text" id="use-note" placeholder="例：通院、旅行、家族の用事…">
+    </div>
+
+    <button class="submit-btn" onclick="recordUsage()">記録する</button>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div id="tab-settings" class="tab">
+  <div class="settings-section-title">残日数の設定</div>
+
+  <div class="settings-card">
+    <div class="settings-card-header">
+      <div class="settings-icon blue">📅</div>
+      <div class="settings-card-name">有給休暇（日・半日単位）</div>
+    </div>
+    <div class="settings-fields">
+      <div>
+        <div class="settings-field-label">付与日数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-pd-total',-1,0.5)">−</button>
+          <input class="amount-input" type="number" id="s-pd-total" min="0" step="0.5" value="20">
+          <button class="amount-btn" onclick="changeSettingAmount('s-pd-total',1,0.5)">＋</button>
+          <span class="amount-unit">日</span>
+        </div>
+      </div>
+      <div>
+        <div class="settings-field-label">使用済み日数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-pd-used',-1,0.5)">−</button>
+          <input class="amount-input" type="number" id="s-pd-used" min="0" step="0.5" value="0">
+          <button class="amount-btn" onclick="changeSettingAmount('s-pd-used',1,0.5)">＋</button>
+          <span class="amount-unit">日</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-card-header">
+      <div class="settings-icon teal">⏰</div>
+      <div class="settings-card-name">有給休暇（時間単位）</div>
+    </div>
+    <div class="settings-fields">
+      <div>
+        <div class="settings-field-label">付与時間数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-ph-total',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-ph-total" min="0" step="1" value="40">
+          <button class="amount-btn" onclick="changeSettingAmount('s-ph-total',1,1)">＋</button>
+          <span class="amount-unit">時間</span>
+        </div>
+      </div>
+      <div>
+        <div class="settings-field-label">使用済み時間数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-ph-used',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-ph-used" min="0" step="1" value="0">
+          <button class="amount-btn" onclick="changeSettingAmount('s-ph-used',1,1)">＋</button>
+          <span class="amount-unit">時間</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-card-header">
+      <div class="settings-icon amber">👶</div>
+      <div class="settings-card-name">子の看護休暇（日単位）</div>
+    </div>
+    <div class="settings-fields">
+      <div>
+        <div class="settings-field-label">付与日数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nd-total',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-nd-total" min="0" step="1" value="10">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nd-total',1,1)">＋</button>
+          <span class="amount-unit">日</span>
+        </div>
+      </div>
+      <div>
+        <div class="settings-field-label">使用済み日数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nd-used',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-nd-used" min="0" step="1" value="0">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nd-used',1,1)">＋</button>
+          <span class="amount-unit">日</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-card-header">
+      <div class="settings-icon violet">👶</div>
+      <div class="settings-card-name">子の看護休暇（時間単位）</div>
+    </div>
+    <div class="settings-fields">
+      <div>
+        <div class="settings-field-label">付与時間数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nh-total',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-nh-total" min="0" step="1" value="40">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nh-total',1,1)">＋</button>
+          <span class="amount-unit">時間</span>
+        </div>
+      </div>
+      <div>
+        <div class="settings-field-label">使用済み時間数</div>
+        <div class="amount-row">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nh-used',-1,1)">−</button>
+          <input class="amount-input" type="number" id="s-nh-used" min="0" step="1" value="0">
+          <button class="amount-btn" onclick="changeSettingAmount('s-nh-used',1,1)">＋</button>
+          <span class="amount-unit">時間</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="saveSettings()">保存する</button>
+
+  <div class="settings-section-title" style="margin-top:24px">データ管理</div>
+  <button class="reset-btn" onclick="confirmReset()">すべてのデータをリセット</button>
+</div>
+
+<!-- ===== HISTORY ===== -->
+<div id="tab-history" class="tab">
+  <div class="history-header">
+    <h2>使用履歴</h2>
+    <span class="history-count" id="history-count">0件</span>
+  </div>
+  <div id="history-container"></div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Bottom Nav -->
+<nav>
+  <button class="nav-btn active" onclick="switchTab('home',this)">
+    <span class="nav-icon">🏠</span>残日数
+  </button>
+  <button class="nav-btn" onclick="switchTab('use',this)">
+    <span class="nav-icon">✏️</span>使う
+  </button>
+  <button class="nav-btn" onclick="switchTab('settings',this)">
+    <span class="nav-icon">⚙️</span>設定
+  </button>
+  <button class="nav-btn" onclick="switchTab('history',this)">
+    <span class="nav-icon">📋</span>履歴
+  </button>
+</nav>
+
+<script>
+const KEY = 'leave_data_v2';
+
+const TYPES = {
+  paid_days:     { name: '有給休暇',     sub: '日・半日単位', unit: '日',  icon: '📅', color: 'blue',   gradId: 'grad-blue'   },
+  paid_hours:    { name: '有給休暇',     sub: '時間単位',    unit: '時間', icon: '⏰', color: 'teal',   gradId: 'grad-teal'   },
+  nursing_days:  { name: '子の看護休暇', sub: '日単位',      unit: '日',  icon: '👶', color: 'amber',  gradId: 'grad-amber'  },
+  nursing_hours: { name: '子の看護休暇', sub: '時間単位',    unit: '時間', icon: '👶', color: 'violet', gradId: 'grad-violet' },
+};
+
+const DEFAULT = () => ({
+  paid_days:     { total: 20, used: 0 },
+  paid_hours:    { total: 40, used: 0 },
+  nursing_days:  { total: 10, used: 0 },
+  nursing_hours: { total: 40, used: 0 },
+  history: [],
+});
+
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || DEFAULT(); }
+  catch { return DEFAULT(); }
+}
+function saveData(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+// ===== Ring SVG =====
+const R = 33, C = 2 * Math.PI * R;
+function ringHTML(type, pct, colorCls, gradId) {
+  const offset = C - (C * pct / 100);
+  return `
+  <svg viewBox="0 0 80 80">
+    <circle class="ring-track" cx="40" cy="40" r="${R}"/>
+    <circle class="ring-fill ${colorCls}" cx="40" cy="40" r="${R}"
+      stroke-dasharray="${C}" stroke-dashoffset="${offset}"/>
+  </svg>`;
+}
+
+// ===== Render Home =====
+function renderHome() {
+  const d = loadData();
+  const html = Object.entries(TYPES).map(([type, t]) => {
+    const { total, used } = d[type];
+    const remain = Math.max(0, total - used);
+    const pct = total > 0 ? Math.round((remain / total) * 100) : 0;
+    const dangerCls = pct <= 20 ? 'danger' : pct <= 40 ? 'warn' : 'ok';
+    const dangerLabel = pct <= 20 ? '残り少ない' : pct <= 40 ? '注意' : '良好';
+    const ringColor = pct <= 20 ? 'red' : (pct <= 40 ? 'amber' : t.color);
+    const ringGrad  = pct <= 20 ? 'grad-red' : (pct <= 40 ? 'grad-amber' : t.gradId);
+    return `
+    <div class="leave-card ${t.color}">
+      <div class="ring-wrap">
+        ${ringHTML(type, pct, ringColor, ringGrad)}
+        <div class="ring-center">
+          <div class="ring-num">${remain}</div>
+          <div class="ring-unit">${t.unit}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${t.name}</div>
+        <div class="card-sub">${t.sub}</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-val">${total} ${t.unit}</div>
+            <div class="stat-lbl">付与</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val">${used} ${t.unit}</div>
+            <div class="stat-lbl">使用済み</div>
+          </div>
+        </div>
+        <div class="status-badge ${dangerCls}">${dangerLabel} ${pct}%</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cards-container').innerHTML = html;
+}
+
+// ===== Type Selector =====
+let currentType = 'paid_days';
+function selectType(el, type) {
+  document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  currentType = type;
+  const isHour = type === 'paid_hours' || type === 'nursing_hours';
+  const isHalfDay = type === 'paid_days';
+  document.getElementById('amount-label').textContent = isHour ? '使用時間数' : '使用日数';
+  document.getElementById('amount-unit').textContent  = isHour ? '時間' : '日';
+  const inp = document.getElementById('use-amount');
+  inp.step  = isHour ? '1' : isHalfDay ? '0.5' : '1';
+  inp.min   = isHour ? '1' : isHalfDay ? '0.5' : '1';
+  inp.value = isHalfDay ? '1' : '1';
+}
+
+// ===== Amount Stepper =====
+function changeSettingAmount(id, delta, step) {
+  const inp = document.getElementById(id);
+  const val = Math.max(0, round2((parseFloat(inp.value) || 0) + delta * step));
+  inp.value = val;
+}
+
+function changeAmount(delta) {
+  const inp = document.getElementById('use-amount');
+  const step = parseFloat(inp.step) || 0.5;
+  const min  = parseFloat(inp.min)  || 0.5;
+  const val  = Math.max(min, (parseFloat(inp.value) || 0) + delta * step);
+  inp.value  = Math.round(val * 100) / 100;
+}
+
+// ===== Record Usage =====
+function recordUsage() {
+  const amount = parseFloat(document.getElementById('use-amount').value);
+  const date   = document.getElementById('use-date').value;
+  const note   = document.getElementById('use-note').value.trim();
+  const type   = currentType;
+
+  if (!amount || amount <= 0) { toast('使用量を入力してください'); return; }
+  if (!date) { toast('日付を選択してください'); return; }
+
+  const d = loadData();
+  if (d[type].used + amount > d[type].total) {
+    toast('残日数を超えています'); return;
+  }
+  d[type].used = round2(d[type].used + amount);
+  d.history.unshift({ date, type, amount, note });
+  saveData(d);
+  renderHome();
+  renderHistory();
+  document.getElementById('use-amount').value = '1';
+  document.getElementById('use-note').value = '';
+  toast('✓ 記録しました');
+  switchTabById('home');
+}
+
+// ===== Render History =====
+function renderHistory() {
+  const d = loadData();
+  const el = document.getElementById('history-container');
+  const cnt = document.getElementById('history-count');
+  cnt.textContent = `${d.history.length}件`;
+  if (!d.history.length) {
+    el.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <p>まだ記録がありません</p>
+      <small>「使う」タブから休暇を記録しましょう</small>
+    </div>`;
+    return;
+  }
+  el.innerHTML = d.history.map((h, i) => {
+    const t = TYPES[h.type];
+    return `
+    <div class="history-item">
+      <div class="history-icon ${t.color}">${t.icon}</div>
+      <div class="history-main">
+        <div class="history-name">${t.name}（${t.sub}）</div>
+        <div class="history-meta">${formatDate(h.date)}${h.note ? ' · ' + h.note : ''}</div>
+      </div>
+      <div class="history-right">
+        <div class="history-amount">−${h.amount}${t.unit}</div>
+        <button class="del-btn" onclick="deleteHistory(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteHistory(i) {
+  if (!confirm('この履歴を削除しますか？\n残日数が元に戻ります。')) return;
+  const d = loadData();
+  const h = d.history[i];
+  d[h.type].used = Math.max(0, round2(d[h.type].used - h.amount));
+  d.history.splice(i, 1);
+  saveData(d);
+  renderHome();
+  renderHistory();
+  toast('削除しました');
+}
+
+// ===== Settings =====
+function loadSettings() {
+  const d = loadData();
+  document.getElementById('s-pd-total').value  = d.paid_days.total;
+  document.getElementById('s-pd-used').value   = d.paid_days.used;
+  document.getElementById('s-ph-total').value  = d.paid_hours.total;
+  document.getElementById('s-ph-used').value   = d.paid_hours.used;
+  document.getElementById('s-nd-total').value  = d.nursing_days.total;
+  document.getElementById('s-nd-used').value   = d.nursing_days.used;
+  document.getElementById('s-nh-total').value  = (d.nursing_hours || { total: 40 }).total;
+  document.getElementById('s-nh-used').value   = (d.nursing_hours || { used: 0 }).used;
+}
+function saveSettings() {
+  const d = loadData();
+  d.paid_days.total      = parseFloat(document.getElementById('s-pd-total').value)  || 0;
+  d.paid_days.used       = parseFloat(document.getElementById('s-pd-used').value)   || 0;
+  d.paid_hours.total     = parseFloat(document.getElementById('s-ph-total').value)  || 0;
+  d.paid_hours.used      = parseFloat(document.getElementById('s-ph-used').value)   || 0;
+  d.nursing_days.total   = parseFloat(document.getElementById('s-nd-total').value)  || 0;
+  d.nursing_days.used    = parseFloat(document.getElementById('s-nd-used').value)   || 0;
+  if (!d.nursing_hours) d.nursing_hours = { total: 0, used: 0 };
+  d.nursing_hours.total  = parseFloat(document.getElementById('s-nh-total').value)  || 0;
+  d.nursing_hours.used   = parseFloat(document.getElementById('s-nh-used').value)   || 0;
+  saveData(d);
+  renderHome();
+  toast('✓ 設定を保存しました');
+}
+function confirmReset() {
+  if (!confirm('すべてのデータをリセットします。\nこの操作は元に戻せません。')) return;
+  localStorage.removeItem(KEY);
+  renderHome(); loadSettings(); renderHistory();
+  toast('リセットしました');
+}
+
+// ===== Tabs =====
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'settings') loadSettings();
+  if (name === 'history')  renderHistory();
+  window.scrollTo({ top: 0 });
+}
+function switchTabById(name) {
+  const btn = [...document.querySelectorAll('.nav-btn')]
+    .find(b => b.getAttribute('onclick')?.includes(`'${name}'`));
+  if (btn) switchTab(name, btn);
+}
+
+// ===== Toast =====
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ===== Helpers =====
+function round2(v) { return Math.round(v * 100) / 100; }
+function formatDate(s) {
+  if (!s) return '';
+  const d = new Date(s + 'T00:00:00');
+  return d.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' });
+}
+
+// ===== Init =====
+(function init() {
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('use-date').value = today;
+  const now = new Date();
+  document.getElementById('header-date').innerHTML =
+    now.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' }) + '<br>' +
+    now.toLocaleDateString('ja-JP', { weekday: 'long' });
+  renderHome();
+})();
+</script>
+</body>
+</html>
