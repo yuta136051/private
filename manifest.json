@@ -1,0 +1,17 @@
+{
+  "name": "有給・看護休暇",
+  "short_name": "休暇管理",
+  "description": "有給休暇・子の看護休暇の残日数管理アプリ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#4F8EF7",
+  "theme_color": "#4F8EF7",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
