@@ -835,6 +835,16 @@ nav {
 
   <button class="save-btn" onclick="saveSettings()">保存する</button>
 
+  <div class="settings-section-title" style="margin-top:24px">バックアップ・復元</div>
+  <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6;">
+    iOSはデータが自動消去されることがあります。定期的にバックアップを保存してください。
+  </div>
+  <button class="save-btn" onclick="exportData()" style="background:linear-gradient(135deg,var(--teal),#2BB896);margin-bottom:10px;">📤 バックアップを保存（JSONダウンロード）</button>
+  <label class="save-btn" style="background:linear-gradient(135deg,var(--violet),#8A5FCC);display:block;text-align:center;cursor:pointer;margin-bottom:0;">
+    📥 バックアップから復元
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+  </label>
+
   <div class="settings-section-title" style="margin-top:24px">データ管理</div>
   <button class="reset-btn" onclick="confirmReset()">すべてのデータをリセット</button>
 </div>
@@ -1168,6 +1178,40 @@ function saveSettings() {
   renderHome();
   toast('✓ 設定を保存しました');
 }
+// ===== Backup / Restore =====
+function exportData() {
+  const d = loadData();
+  const json = JSON.stringify(d, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `leave_backup_${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('✓ バックアップを保存しました');
+}
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (!d.paid_days || !d.paid_hours || !d.nursing_days) throw new Error();
+      if (!confirm('現在のデータをバックアップファイルで上書きします。よろしいですか？')) return;
+      saveData(d);
+      renderHome(); loadSettings(); renderHistory();
+      toast('✓ 復元しました');
+    } catch {
+      toast('ファイルが正しくありません');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
 function confirmReset() {
   if (!confirm('すべてのデータをリセットします。\nこの操作は元に戻せません。')) return;
   localStorage.removeItem(KEY);
