@@ -174,6 +174,24 @@ body {
 .status-badge.danger { background: #FFF0F0; color: var(--red); }
 .status-badge::before { content: '●'; font-size: 8px; }
 
+/* Transfer button */
+.transfer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.transfer-btn:active { background: var(--border); }
+
 /* ===== Use Tab ===== */
 #tab-use { padding: 20px 16px; }
 
@@ -850,10 +868,29 @@ function renderHome() {
           </div>
         </div>
         <div class="status-badge ${dangerCls}">${dangerLabel} ${pct}%</div>
+        ${type === 'paid_hours' ? `<button class="transfer-btn" onclick="transferToHours('paid')">🔄 有給1日→8時間に振替</button>` : ''}
+        ${type === 'nursing_hours' ? `<button class="transfer-btn" onclick="transferToHours('nursing')">🔄 看護1日→8時間に振替</button>` : ''}
       </div>
     </div>`;
   }).join('');
   document.getElementById('cards-container').innerHTML = html;
+}
+
+// ===== Transfer 1 day → 8 hours =====
+function transferToHours(prefix) {
+  const dayKey  = prefix + '_days';
+  const hourKey = prefix + '_hours';
+  const d = loadData();
+  const dayRemain = round2(d[dayKey].total - d[dayKey].used);
+  if (dayRemain < 1) { toast('振替できる日数が足りません（残1日以上必要）'); return; }
+  d[dayKey].used  = round2(d[dayKey].used + 1);
+  d[hourKey].total = round2(d[hourKey].total + 8);
+  const label = prefix === 'paid' ? '有給休暇' : '子の看護休暇';
+  d.history.unshift({ date: new Date().toISOString().slice(0,10), type: dayKey, amount: 1, note: `🔄 時間休へ振替（+8時間）` });
+  saveData(d);
+  renderHome();
+  renderHistory();
+  toast(`✓ ${label}：1日 → 8時間に振替しました`);
 }
 
 // ===== Type Selector =====
