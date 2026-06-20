@@ -477,6 +477,74 @@ body {
   transition: all .15s;
 }
 .del-btn:active { background: #FFF0F0; color: var(--red); }
+.edit-btn {
+  width: 28px; height: 28px;
+  border: none; background: var(--bg); border-radius: 8px;
+  cursor: pointer; color: var(--text3); font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.edit-btn:active { background: #EBF2FF; color: var(--blue); }
+
+/* Edit Modal */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(26,35,64,.45);
+  z-index: 200;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: var(--card);
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px calc(24px + var(--safe-b));
+  width: 100%;
+  max-width: 480px;
+  animation: slideUp .22s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-title { font-size: 16px; font-weight: 800; margin-bottom: 18px; }
+.modal-type-label {
+  font-size: 12px; color: var(--text2);
+  background: var(--bg); border-radius: 8px;
+  padding: 6px 10px; margin-bottom: 16px;
+  display: inline-block;
+}
+.modal-field { margin-bottom: 14px; }
+.modal-field label { font-size: 12px; color: var(--text2); font-weight: 600; display: block; margin-bottom: 5px; }
+.modal-field input[type="date"],
+.modal-field input[type="text"] {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-size: 15px; color: var(--text);
+  background: var(--bg);
+  -webkit-appearance: none;
+}
+.modal-amount-row { display: flex; align-items: center; gap: 8px; }
+.modal-amount-row input[type="number"] {
+  flex: 1; padding: 10px 12px; text-align: center;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-size: 18px; font-weight: 700; color: var(--text);
+  background: var(--bg); -webkit-appearance: none;
+}
+.modal-amount-row .amt-btn {
+  width: 42px; height: 42px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  background: var(--bg); font-size: 20px; font-weight: 700;
+  cursor: pointer; color: var(--blue); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+.modal-btns button {
+  flex: 1; padding: 13px;
+  border-radius: 14px; border: none;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.modal-save { background: var(--blue); color: #fff; }
+.modal-cancel { background: var(--bg); color: var(--text2); }
 
 .empty-state {
   text-align: center;
@@ -782,6 +850,35 @@ nav {
 
 <div id="toast"></div>
 
+<!-- Edit History Modal -->
+<div class="modal-overlay" id="edit-modal" onclick="closeEditModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-title">履歴を修正</div>
+    <div class="modal-type-label" id="edit-type-label"></div>
+    <div class="modal-field">
+      <label>日付</label>
+      <input type="date" id="edit-date">
+    </div>
+    <div class="modal-field">
+      <label id="edit-amount-label">使用日数</label>
+      <div class="modal-amount-row">
+        <button class="amt-btn" onclick="changeEditAmount(-1)">−</button>
+        <input type="number" id="edit-amount" min="0.5" step="0.5">
+        <button class="amt-btn" onclick="changeEditAmount(1)">+</button>
+        <span id="edit-unit" style="font-size:13px;color:var(--text2);white-space:nowrap"></span>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>メモ（任意）</label>
+      <input type="text" id="edit-note" placeholder="例：有給消化">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeEditModal()">キャンセル</button>
+      <button class="modal-save" onclick="saveEditHistory()">保存</button>
+    </div>
+  </div>
+</div>
+
 <!-- Bottom Nav -->
 <nav>
   <button class="nav-btn active" onclick="switchTab('home',this)">
@@ -975,10 +1072,61 @@ function renderHistory() {
       </div>
       <div class="history-right">
         <div class="history-amount">−${h.amount}${t.unit}</div>
+        <button class="edit-btn" onclick="openEditModal(${i})">✏️</button>
         <button class="del-btn" onclick="deleteHistory(${i})">✕</button>
       </div>
     </div>`;
   }).join('');
+}
+
+// ===== Edit History Modal =====
+let editIndex = -1;
+function openEditModal(i) {
+  const d = loadData();
+  const h = d.history[i];
+  const t = TYPES[h.type];
+  const isHour = h.type === 'paid_hours' || h.type === 'nursing_hours';
+  const isHalfDay = h.type === 'paid_days';
+  editIndex = i;
+  document.getElementById('edit-type-label').textContent = `${t.name}（${t.sub}）`;
+  document.getElementById('edit-date').value = h.date;
+  document.getElementById('edit-amount').value = h.amount;
+  document.getElementById('edit-amount').step = isHour ? '1' : isHalfDay ? '0.5' : '1';
+  document.getElementById('edit-amount').min  = isHour ? '1' : isHalfDay ? '0.5' : '1';
+  document.getElementById('edit-amount-label').textContent = isHour ? '使用時間数' : '使用日数';
+  document.getElementById('edit-unit').textContent = t.unit;
+  document.getElementById('edit-note').value = h.note || '';
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeEditModal(e) {
+  if (e && e.target !== document.getElementById('edit-modal')) return;
+  document.getElementById('edit-modal').classList.remove('open');
+  editIndex = -1;
+}
+function changeEditAmount(delta) {
+  const inp = document.getElementById('edit-amount');
+  const step = parseFloat(inp.step) || 0.5;
+  const min  = parseFloat(inp.min)  || 0.5;
+  inp.value  = Math.max(min, round2((parseFloat(inp.value) || 0) + delta * step));
+}
+function saveEditHistory() {
+  const newAmount = parseFloat(document.getElementById('edit-amount').value);
+  const newDate   = document.getElementById('edit-date').value;
+  const newNote   = document.getElementById('edit-note').value.trim();
+  if (!newAmount || newAmount <= 0) { toast('使用量を入力してください'); return; }
+  if (!newDate) { toast('日付を選択してください'); return; }
+  const d = loadData();
+  const h = d.history[editIndex];
+  const diff = round2(newAmount - h.amount);
+  if (d[h.type].used + diff > d[h.type].total) { toast('残日数を超えています'); return; }
+  d[h.type].used = Math.max(0, round2(d[h.type].used + diff));
+  d.history[editIndex] = { ...h, date: newDate, amount: newAmount, note: newNote };
+  saveData(d);
+  renderHome();
+  renderHistory();
+  document.getElementById('edit-modal').classList.remove('open');
+  editIndex = -1;
+  toast('✓ 修正しました');
 }
 
 function deleteHistory(i) {
