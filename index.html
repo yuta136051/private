@@ -546,6 +546,55 @@ body {
 .modal-save { background: var(--blue); color: #fff; }
 .modal-cancel { background: var(--bg); color: var(--text2); }
 
+/* Name Setup Overlay */
+#name-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+#name-overlay.open { display: flex; }
+.name-setup-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 8px 40px rgba(26,35,64,.12);
+  animation: fadeIn .3s ease;
+}
+.name-setup-icon { font-size: 48px; text-align: center; margin-bottom: 16px; }
+.name-setup-title {
+  font-size: 22px; font-weight: 800;
+  text-align: center; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--teal));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.name-setup-desc {
+  font-size: 13px; color: var(--text2);
+  text-align: center; margin-bottom: 24px; line-height: 1.6;
+}
+.name-setup-input {
+  width: 100%; padding: 13px 16px;
+  border: 2px solid var(--border); border-radius: 14px;
+  font-size: 17px; color: var(--text); background: var(--bg);
+  -webkit-appearance: none; outline: none;
+  margin-bottom: 16px;
+  font-family: inherit;
+}
+.name-setup-input:focus { border-color: var(--blue); }
+.name-setup-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--teal));
+  color: #fff; border: none; border-radius: 14px;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  font-family: inherit;
+}
+
 .empty-state {
   text-align: center;
   padding: 60px 20px 40px;
@@ -648,7 +697,7 @@ nav {
 
 <!-- Header -->
 <header class="app-header">
-  <h1>休暇管理</h1>
+  <h1 id="header-title">休暇管理</h1>
   <div class="header-date" id="header-date"></div>
 </header>
 
@@ -723,6 +772,19 @@ nav {
 
 <!-- ===== SETTINGS ===== -->
 <div id="tab-settings" class="tab">
+  <div class="settings-section-title">プロフィール</div>
+  <div class="settings-card">
+    <div class="settings-fields">
+      <div>
+        <div class="settings-field-label">お名前</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input class="amount-input" type="text" id="s-username" maxlength="20" style="flex:1;text-align:left;padding:10px 12px;font-family:inherit;">
+          <button class="save-btn" onclick="saveNameFromSettings()" style="flex-shrink:0;padding:10px 16px;margin:0;font-size:14px;width:auto;">変更</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="settings-section-title">残日数の設定</div>
 
   <div class="settings-card">
@@ -858,6 +920,17 @@ nav {
   <div id="history-container"></div>
 </div>
 
+<!-- Name Setup Overlay -->
+<div id="name-overlay">
+  <div class="name-setup-card">
+    <div class="name-setup-icon">👋</div>
+    <div class="name-setup-title">休暇管理アプリ</div>
+    <div class="name-setup-desc">あなたのお名前を入力してください。<br>各自のスマホで別々のデータが管理されます。</div>
+    <input class="name-setup-input" type="text" id="name-input" placeholder="例：山田 太郎" maxlength="20">
+    <button class="name-setup-btn" onclick="confirmName()">はじめる</button>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <!-- Edit History Modal -->
@@ -907,6 +980,30 @@ nav {
 
 <script>
 const KEY = 'leave_data_v2';
+const USER_KEY = 'leave_username';
+
+function loadName() { return localStorage.getItem(USER_KEY) || ''; }
+
+function updateHeaderName() {
+  const name = loadName();
+  document.getElementById('header-title').textContent = name ? `${name}さんの休暇管理` : '休暇管理';
+}
+
+function confirmName() {
+  const name = document.getElementById('name-input').value.trim();
+  if (!name) { document.getElementById('name-input').focus(); return; }
+  localStorage.setItem(USER_KEY, name);
+  document.getElementById('name-overlay').classList.remove('open');
+  updateHeaderName();
+}
+
+function saveNameFromSettings() {
+  const name = document.getElementById('s-username').value.trim();
+  if (!name) { toast('お名前を入力してください'); return; }
+  localStorage.setItem(USER_KEY, name);
+  updateHeaderName();
+  toast('✓ お名前を変更しました');
+}
 
 const TYPES = {
   paid_days:     { name: '有給休暇',     sub: '日・半日単位', unit: '日',  icon: '📅', color: 'blue',   gradId: 'grad-blue'   },
@@ -1153,6 +1250,7 @@ function deleteHistory(i) {
 
 // ===== Settings =====
 function loadSettings() {
+  document.getElementById('s-username').value = loadName();
   const d = loadData();
   document.getElementById('s-pd-total').value  = d.paid_days.total;
   document.getElementById('s-pd-used').value   = d.paid_days.used;
@@ -1261,6 +1359,10 @@ function formatDate(s) {
   document.getElementById('header-date').innerHTML =
     now.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' }) + '<br>' +
     now.toLocaleDateString('ja-JP', { weekday: 'long' });
+  updateHeaderName();
+  if (!loadName()) {
+    document.getElementById('name-overlay').classList.add('open');
+  }
   renderHome();
 })();
 </script>
