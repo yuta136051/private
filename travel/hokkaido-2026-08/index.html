@@ -130,13 +130,18 @@ li{margin:.25em 0}
   body{background:#fff;font-size:12.2px;color:#111827}
   .printbar{display:none}
   .wrap{max-width:none;padding:0}
-  .hero,.section{box-shadow:none;border:1px solid #d8d8d8;border-radius:14px;break-inside:avoid;background:#fff}
-  .hero{min-height:0;padding:30px;margin-bottom:10px}
+  .hero,.section{box-shadow:none;border:1px solid #d8d8d8;border-radius:14px;background:#fff}
+  .section{break-inside:avoid}
+  .hero{min-height:0;padding:30px;margin-bottom:10px;overflow:visible}
+  .hero:before,.hero:after{display:none}
   h1{font-size:34px} .subtitle{font-size:15px}
   .toc{display:none}
   .section{page-break-before:always;margin-top:0;padding:18px}
   .section h2{font-size:20px;margin-bottom:10px}
-  .card,.place,.step,.notice,.danger,.ok{break-inside:avoid}
+  .card,.place,.step,.notice,.danger,.ok,.panel,.member{break-inside:avoid;page-break-inside:avoid}
+  .family{margin-top:12px}
+  .avatar{width:40px;height:40px;font-size:20px;margin-bottom:5px}
+  .member{padding:9px}
   .place{grid-template-columns:100px 1fr;padding:12px;margin:10px 0}.place .icon{min-height:100px;font-size:44px}
   th,td{padding:7px 8px}.fungrid,.grid2,.grid3{gap:8px}.fun{padding:9px}.checklist{grid-template-columns:1fr 1fr;gap:6px}.check{padding:7px}.footer{font-size:10px}
   a{color:#111827;border:0}
@@ -151,13 +156,13 @@ li{margin:.25em 0}
     <h1>杉山家<br>北海道家族旅行<br>旅のしおり</h1>
     <p class="subtitle">2026年8月23日（日）－ 8月30日（日）｜東京（羽田）⇄ 新千歳 ／ 札幌・ニセコ・洞爺湖をめぐる、子ども中心の8日間</p>
     <div class="badges">
-      <span class="badge">勇太</span><span class="badge">悠子</span><span class="badge">友梨</span><span class="badge">悠人</span>
+      <span class="badge">勇太</span><span class="badge">悠子</span><span class="badge">友梨</span><span class="badge">佑亮</span>
       <span class="badge">義理実家（札幌）に集合</span><span class="badge">ヒルトンニセコビレッジ</span><span class="badge">洞爺湖万世閣ホテル</span>
     </div>
     <div class="hero-grid">
       <div class="panel">
         <h3>旅の設計思想</h3>
-        <p class="bigdate">悠子・友梨・悠人は先に札幌の義理実家に滞在中。勇太が8/23合流。</p>
+        <p class="bigdate">悠子・友梨・佑亮は先に札幌の義理実家に滞在中。勇太が8/23合流。</p>
         <p>確定している予約はカレンダー・メールの記載をそのまま掲載し、それ以外の空き日程（札幌滞在、ニセコ・洞爺湖の日中）には未就学児2人連れでも楽しめる定番スポットを「提案」として追加しています。当日の混雑・天候にあわせて自由に入れ替えてください。</p>
       </div>
       <div class="panel">
@@ -176,7 +181,7 @@ li{margin:.25em 0}
       <div class="member"><div class="avatar">👨</div><b>勇太</b><span>パパ・全体管理</span></div>
       <div class="member"><div class="avatar">👩</div><b>悠子</b><span>ママ・先発隊</span></div>
       <div class="member"><div class="avatar">👧</div><b>友梨</b><span>元気いっぱいのお姉ちゃん</span></div>
-      <div class="member"><div class="avatar">👶</div><b>悠人</b><span>甘えん坊の末っ子</span></div>
+      <div class="member"><div class="avatar">👶</div><b>佑亮</b><span>甘えん坊の末っ子</span></div>
     </div>
   </section>
 
@@ -193,7 +198,7 @@ li{margin:.25em 0}
         <div class="datebox"><div class="d">8/23</div><div class="w">Sun</div></div>
         <div class="steps">
           <div class="step"><div class="time">10:00</div><div>羽田発 ユナイテッド航空。<span class="tag tag-confirm">確定</span> eTicket番号 0162336935785。</div></div>
-          <div class="step"><div class="time">午後</div><div>新千歳空港着 → 義理実家（札幌）へ移動。先着の悠子・友梨・悠人と合流。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">午後</div><div>新千歳空港着 → 義理実家（札幌）へ移動。先着の悠子・友梨・佑亮と合流。<span class="tag tag-confirm">確定</span></div></div>
           <div class="step"><div class="time">夕方</div><div>移動日なので無理せず、義理実家近くでゆっくり過ごす。<span class="tag tag-suggest">提案</span></div></div>
         </div>
       </div>
@@ -201,7 +206,7 @@ li{margin:.25em 0}
         <div class="datebox"><div class="d">8/24</div><div class="w">Mon</div></div>
         <div class="steps">
           <div class="step"><div class="time">終日</div><div>勇太は有給。家族で札幌市内の子連れスポットへ（円山動物園／モエレ沼公園など）。<span class="tag tag-confirm">確定：有給</span><span class="tag tag-suggest">提案：行き先</span></div></div>
-          <div class="step"><div class="time">夜</div><div>悠子は飲み会の予定あり。パパ＋友梨・悠人でおうち時間。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">夜</div><div>悠子は飲み会の予定あり。パパ＋友梨・佑亮でおうち時間。<span class="tag tag-confirm">確定</span></div></div>
         </div>
       </div>
       <div class="day">
@@ -290,7 +295,7 @@ li{margin:.25em 0}
         <p>市街地から近く、規模も大きすぎないので未就学児2人連れでも回りやすい定番スポット。屋内展示もあるので雨天時の候補にもなる。</p>
         <div class="fungrid">
           <div class="fun"><b>友梨（お姉ちゃん）向け</b>好きな動物を自分で見つける「動物さがしゲーム」にするとやる気アップ。</div>
-          <div class="fun"><b>悠人（末っ子）向け</b>ベビーカーのまま回れる導線が多く、途中で寝ても安心。</div>
+          <div class="fun"><b>佑亮（末っ子）向け</b>ベビーカーのまま回れる導線が多く、途中で寝ても安心。</div>
         </div>
       </div>
     </div>
@@ -402,9 +407,9 @@ li{margin:.25em 0}
         </div>
       </div>
       <div class="card">
-        <h3>子ども（友梨・悠人）まわり</h3>
+        <h3>子ども（友梨・佑亮）まわり</h3>
         <div class="checklist">
-          <div class="check"><span class="box"></span><span>おむつ・おしりふき（悠人）</span></div>
+          <div class="check"><span class="box"></span><span>おむつ・おしりふき（佑亮）</span></div>
           <div class="check"><span class="box"></span><span>着替え多め・防水シート</span></div>
           <div class="check"><span class="box"></span><span>お気に入りのおもちゃ・絵本</span></div>
           <div class="check"><span class="box"></span><span>子ども用食器・スプーン</span></div>
@@ -458,7 +463,7 @@ li{margin:.25em 0}
       <div class="card">
         <h3>子連れ移動のコツ</h3>
         <ul>
-          <li><b>空港：</b>羽田・新千歳ともに早めのチェックインで悠人のベビーカー対応をゆとりを持って。</li>
+          <li><b>空港：</b>羽田・新千歳ともに早めのチェックインで佑亮のベビーカー対応をゆとりを持って。</li>
           <li><b>車移動：</b>ニセコ⇄洞爺湖間は景色がよいので、こまめに休憩を挟んで飽きさせない工夫を。</li>
           <li><b>宿泊：</b>大浴場は時間帯で男女入替のため、事前にホテルで時間を確認しておくと安心。</li>
           <li><b>予備日：</b>8/25・8/29は予定を詰めすぎず、疲れに応じて自由に調整できるようにしてある。</li>
