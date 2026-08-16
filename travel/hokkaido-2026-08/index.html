@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>杉山家 北海道家族旅行 旅のしおり｜2026.8.23-8.30</title>
+<style>
+:root{
+  --ink:#172033;
+  --muted:#667085;
+  --paper:#fffdf7;
+  --cream:#fff6e4;
+  --sky:#dff5ff;
+  --aqua:#36b6c9;
+  --deep:#0a6b7a;
+  --coral:#ff7f67;
+  --sun:#ffc857;
+  --leaf:#56b870;
+  --pink:#ff9ec7;
+  --lav:#8d80e8;
+  --line:#e8e2d6;
+  --soft:#f7f3ea;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:linear-gradient(180deg,#e7f7ff 0,#fffdf7 45%,#fff8e8 100%);
+  font-family:"Noto Sans CJK JP","Yu Gothic",Meiryo,sans-serif;
+  line-height:1.65;
+  font-size:15px;
+}
+a{color:var(--deep);text-decoration:none;border-bottom:1px solid rgba(10,107,122,.25)}
+.printbar{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);padding:10px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between;
+}
+.printbar .mini{font-size:13px;color:var(--muted)}
+.printbar button{border:0;background:var(--deep);color:#fff;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 22px 80px}
+.hero{
+  border:1px solid rgba(255,255,255,.6);border-radius:34px;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(255,200,87,.45),transparent 25%),
+    radial-gradient(circle at 85% 12%,rgba(255,158,199,.38),transparent 28%),
+    radial-gradient(circle at 72% 80%,rgba(54,182,201,.30),transparent 32%),
+    linear-gradient(135deg,#ffffff 0,#fff3df 48%,#dff6ff 100%);
+  box-shadow:0 22px 70px rgba(15,72,95,.16);
+  min-height:560px;
+  padding:54px;
+}
+.hero:before{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;background:rgba(255,255,255,.6);border-radius:50%}
+.hero:after{content:"";position:absolute;left:-80px;bottom:-110px;width:310px;height:310px;background:rgba(54,182,201,.15);border-radius:50%}
+.kicker{letter-spacing:.16em;color:var(--deep);font-weight:900;text-transform:uppercase;font-size:13px}
+h1{font-size:46px;line-height:1.15;margin:14px 0 16px;letter-spacing:.02em}
+.subtitle{font-size:20px;color:#334155;margin:0 0 26px;font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 28px}
+.badge{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:999px;padding:8px 13px;font-weight:800;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;margin-top:32px;position:relative;z-index:2}
+.panel{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);border-radius:24px;padding:22px;box-shadow:0 10px 35px rgba(17,24,39,.07)}
+.panel h3{margin:0 0 12px;font-size:18px}
+.bigdate{font-size:26px;font-weight:900;color:var(--deep)}
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0}
+.toc a{display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 14px;font-weight:900;box-shadow:0 6px 20px rgba(17,24,39,.05);border-bottom:1px solid var(--line)}
+.section{margin-top:34px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;box-shadow:0 10px 34px rgba(17,24,39,.055)}
+.section h2{font-size:27px;line-height:1.25;margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.section h2 .num{width:34px;height:34px;display:inline-grid;place-items:center;border-radius:12px;background:var(--deep);color:#fff;font-size:18px}
+.lede{color:#475467;font-weight:700;margin-top:-8px;margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,#fff,#fffaf0);border-radius:20px;padding:18px;overflow:hidden}
+.card.sky{background:linear-gradient(180deg,#f2fbff,#fff)}
+.card.coral{background:linear-gradient(180deg,#fff5f2,#fff)}
+.card.green{background:linear-gradient(180deg,#f2fff5,#fff)}
+.card.lav{background:linear-gradient(180deg,#f6f5ff,#fff)}
+.card h3,.card h4{margin:0 0 10px;font-size:18px}
+.card .label{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.notice{background:#fff7d7;border:1px solid #f6d55c;border-radius:18px;padding:14px 16px;font-weight:800}
+.danger{background:#fff0ee;border:1px solid #ffb3a6;border-radius:18px;padding:14px 16px;font-weight:800}
+.ok{background:#eefaf1;border:1px solid #a9e5b7;border-radius:18px;padding:14px 16px;font-weight:800}
+.timeline{position:relative;margin:10px 0 0}
+.day{display:grid;grid-template-columns:105px 1fr;gap:18px;padding:18px 0;border-top:1px solid var(--line)}
+.day:first-child{border-top:0}
+.datebox{background:var(--deep);color:#fff;border-radius:18px;padding:14px;text-align:center;height:max-content;box-shadow:0 8px 20px rgba(10,107,122,.16)}
+.datebox .d{font-size:22px;font-weight:900}
+.datebox .w{font-size:13px;opacity:.86}
+.steps{display:grid;gap:9px}
+.step{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:15px;padding:10px 12px}
+.time{font-weight:900;color:var(--deep)}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.tag{border-radius:999px;background:#f3f4f6;border:1px solid #e5e7eb;padding:5px 9px;font-size:12px;font-weight:800;color:#344054}
+.tag-confirm{background:#eefaf1;border-color:#a9e5b7;color:#0f6b34}
+.tag-suggest{background:#eef4ff;border-color:#c3d7ff;color:#1d4b9c}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px;overflow:hidden;border-radius:16px;border:1px solid var(--line)}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#f6fbfc;color:#344054;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+tr:last-child td{border-bottom:0}
+ul{margin:8px 0 0;padding-left:1.2em}
+li{margin:.25em 0}
+.place{
+  display:grid;grid-template-columns:210px 1fr;gap:22px;border:1px solid var(--line);border-radius:24px;padding:18px;margin:18px 0;background:linear-gradient(180deg,#fff,#fffdf9)
+}
+.place .icon{border-radius:22px;min-height:190px;display:grid;place-items:center;font-size:74px;background:linear-gradient(135deg,#e8fbff,#fff1d1);border:1px solid rgba(10,107,122,.15)}
+.place h3{margin:0;font-size:24px}
+.place-meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+.meta{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:7px 9px;font-size:12px;font-weight:800}
+.fungrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.fun{border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb}
+.fun b{display:block;color:var(--deep);margin-bottom:5px}
+.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.check{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start}
+.box{width:18px;height:18px;border:2px solid #98a2b3;border-radius:4px;flex:0 0 18px;margin-top:3px}
+.family{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.member{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;text-align:center}
+.avatar{width:54px;height:54px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-size:27px;background:#fff1d6;border:1px solid #f7d58e}
+.member b{display:block;font-size:17px}
+.member span{font-size:12px;color:var(--muted);font-weight:800}
+.footer{color:#667085;font-size:12px;margin-top:20px}
+.secret{background:#111827;color:#fff;border-radius:18px;padding:16px}
+.secret table{border-color:#374151;color:#fff}
+.secret th{background:#1f2937;color:#d1d5db}.secret td{border-color:#374151}
+.small{font-size:12px;color:var(--muted)}
+.source-list{font-size:12px;color:#475467}.source-list li{margin-bottom:4px}
+@media(max-width:900px){
+  .hero{padding:32px;min-height:auto}.hero-grid,.grid2,.grid3,.place,.fungrid,.checklist{grid-template-columns:1fr}.toc{grid-template-columns:1fr 1fr}.family{grid-template-columns:1fr 1fr}h1{font-size:34px}.day{grid-template-columns:1fr}.step{grid-template-columns:62px 1fr}
+}
+@media print{
+  @page{size:A4;margin:11mm}
+  body{background:#fff;font-size:12.2px;color:#111827}
+  .printbar{display:none}
+  .wrap{max-width:none;padding:0}
+  .hero,.section{box-shadow:none;border:1px solid #d8d8d8;border-radius:14px;break-inside:avoid;background:#fff}
+  .hero{min-height:0;padding:30px;margin-bottom:10px}
+  h1{font-size:34px} .subtitle{font-size:15px}
+  .toc{display:none}
+  .section{page-break-before:always;margin-top:0;padding:18px}
+  .section h2{font-size:20px;margin-bottom:10px}
+  .card,.place,.step,.notice,.danger,.ok{break-inside:avoid}
+  .place{grid-template-columns:100px 1fr;padding:12px;margin:10px 0}.place .icon{min-height:100px;font-size:44px}
+  th,td{padding:7px 8px}.fungrid,.grid2,.grid3{gap:8px}.fun{padding:9px}.checklist{grid-template-columns:1fr 1fr;gap:6px}.check{padding:7px}.footer{font-size:10px}
+  a{color:#111827;border:0}
+}
+</style>
+</head>
+<body>
+<div class="printbar"><div><b>杉山家 北海道家族旅行 旅のしおり</b> <span class="mini">HTML版。印刷/PDF化は右上ボタンから。</span></div><button onclick="window.print()">印刷／PDF保存</button></div>
+<div class="wrap">
+  <section class="hero">
+    <div class="kicker">HOKKAIDO FAMILY TRIP 2026</div>
+    <h1>杉山家<br>北海道家族旅行<br>旅のしおり</h1>
+    <p class="subtitle">2026年8月23日（日）－ 8月30日（日）｜東京（羽田）⇄ 新千歳 ／ 札幌・ニセコ・洞爺湖をめぐる、子ども中心の8日間</p>
+    <div class="badges">
+      <span class="badge">勇太</span><span class="badge">悠子</span><span class="badge">友梨</span><span class="badge">悠人</span>
+      <span class="badge">義理実家（札幌）に集合</span><span class="badge">ヒルトンニセコビレッジ</span><span class="badge">洞爺湖万世閣ホテル</span>
+    </div>
+    <div class="hero-grid">
+      <div class="panel">
+        <h3>旅の設計思想</h3>
+        <p class="bigdate">悠子・友梨・悠人は先に札幌の義理実家に滞在中。勇太が8/23合流。</p>
+        <p>確定している予約はカレンダー・メールの記載をそのまま掲載し、それ以外の空き日程（札幌滞在、ニセコ・洞爺湖の日中）には未就学児2人連れでも楽しめる定番スポットを「提案」として追加しています。当日の混雑・天候にあわせて自由に入れ替えてください。</p>
+      </div>
+      <div class="panel">
+        <h3>今回のルート</h3>
+        <ul>
+          <li>8/23 羽田 → 新千歳（勇太合流）→ 札幌・義理実家</li>
+          <li>8/23-8/26 札幌滞在（義理実家ベース）</li>
+          <li>8/26 ニセコへ移動・宿泊</li>
+          <li>8/27 洞爺湖へ移動・宿泊</li>
+          <li>8/28-8/30 札幌に戻り義理実家滞在</li>
+          <li>8/30 新千歳 → 羽田（4名で帰京）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="family">
+      <div class="member"><div class="avatar">👨</div><b>勇太</b><span>パパ・全体管理</span></div>
+      <div class="member"><div class="avatar">👩</div><b>悠子</b><span>ママ・先発隊</span></div>
+      <div class="member"><div class="avatar">👧</div><b>友梨</b><span>元気いっぱいのお姉ちゃん</span></div>
+      <div class="member"><div class="avatar">👶</div><b>悠人</b><span>甘えん坊の末っ子</span></div>
+    </div>
+  </section>
+
+  <nav class="toc">
+    <a href="#schedule">日程表</a><a href="#reservation">予約控え</a><a href="#places">エリアガイド</a><a href="#packing">持ち物</a>
+    <a href="#hotels">宿泊詳細</a><a href="#ops">当日オペレーション</a><a href="#contacts">連絡先</a><a href="#sources">情報ソース</a>
+  </nav>
+
+  <section class="section" id="schedule">
+    <h2><span class="num">1</span>全体スケジュール</h2>
+    <p class="lede">カレンダー・メールで確認できた予約は<span class="tag tag-confirm" style="margin:0 4px">確定</span>、まだ具体的な予定が入っていない時間帯は<span class="tag tag-suggest" style="margin:0 4px">提案</span>として、未就学児2人連れでも動きやすいプランをのせています。</p>
+    <div class="timeline">
+      <div class="day">
+        <div class="datebox"><div class="d">8/23</div><div class="w">Sun</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">10:00</div><div>羽田発 ユナイテッド航空。<span class="tag tag-confirm">確定</span> eTicket番号 0162336935785。</div></div>
+          <div class="step"><div class="time">午後</div><div>新千歳空港着 → 義理実家（札幌）へ移動。先着の悠子・友梨・悠人と合流。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">夕方</div><div>移動日なので無理せず、義理実家近くでゆっくり過ごす。<span class="tag tag-suggest">提案</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/24</div><div class="w">Mon</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">終日</div><div>勇太は有給。家族で札幌市内の子連れスポットへ（円山動物園／モエレ沼公園など）。<span class="tag tag-confirm">確定：有給</span><span class="tag tag-suggest">提案：行き先</span></div></div>
+          <div class="step"><div class="time">夜</div><div>悠子は飲み会の予定あり。パパ＋友梨・悠人でおうち時間。<span class="tag tag-confirm">確定</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/25</div><div class="w">Tue</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">終日</div><div>特に予定なし。前日の疲れをみつつ、義理実家でゆったり過ごすか、大通公園・さとらんど方面へ。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">日中</div><div>翌日からニセコ・洞爺湖泊が続くため、荷造り・レンタカー予約状況の最終確認をしておく。<span class="tag tag-suggest">提案</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/26</div><div class="w">Wed</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">午前</div><div>札幌からニセコへ移動（車で約2時間目安）。<span class="tag tag-suggest">提案：移動手段は要確認</span></div></div>
+          <div class="step"><div class="time">日中</div><div>ニセコ高橋牧場ミルク工房や道の駅ニセコビュープラザで羊蹄山ビューを楽しむ。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">宿泊</div><div>🏨 ヒルトンニセコビレッジ泊。<span class="tag tag-confirm">確定（カレンダー記載）</span> ※予約番号など詳細は別途ご確認ください。</div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/27</div><div class="w">Thu</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">午前</div><div>ヒルトンニセコビレッジをチェックアウト。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">午前〜昼</div><div>ニセコ→洞爺湖へ移動（車で約1時間目安）。道中の景色を楽しむ。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">15:00</div><div>🏨 洞爺湖万世閣ホテル レイクサイドテラス チェックイン。<span class="tag tag-confirm">確定</span> 予約番号 RYa0mp7fug（詳細は「宿泊詳細」参照）。</div></div>
+          <div class="step"><div class="time">夕方</div><div>大浴場「月の湯」「星の湯」でひと休み。夕食はホテルのビュッフェ。<span class="tag tag-confirm">確定：夕食付プラン</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/28</div><div class="w">Fri</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">朝食後</div><div>ホテルのビュッフェ朝食（大人2・幼児2予約済み）。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">午前</div><div>洞爺湖万世閣ホテルをチェックアウト。<span class="tag tag-confirm">確定</span></div></div>
+          <div class="step"><div class="time">日中</div><div>洞爺湖ビジターセンター・洞爺湖遊覧船、昭和新山クマ牧場など周辺観光を挟みつつ札幌方面へ戻る。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">夕方</div><div>札幌・義理実家に戻る。<span class="tag tag-suggest">提案</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/29</div><div class="w">Sat</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">終日</div><div>旅の疲れをリセットする予備日。義理実家でゆったりするか、サッポロさとらんどなど屋内外遊べるスポットへ。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">メモ</div><div>カレンダーに「13時からマイル予約」の繰り返し予定があるが、今回の旅行内容としては特定できず。別件の可能性が高いため要確認。<span class="tag tag-suggest">要確認</span></div></div>
+        </div>
+      </div>
+      <div class="day">
+        <div class="datebox"><div class="d">8/30</div><div class="w">Sun</div></div>
+        <div class="steps">
+          <div class="step"><div class="time">午前</div><div>荷造り・チェックアウト準備。空港までの移動時間に余裕を持つ。<span class="tag tag-suggest">提案</span></div></div>
+          <div class="step"><div class="time">12:30</div><div>新千歳発 ユナイテッド航空。<span class="tag tag-confirm">確定</span> 4名（友梨を予約に追加予定）で搭乗。</div></div>
+          <div class="step"><div class="time">夕方</div><div>羽田着、帰宅。長旅お疲れさまでした！</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="danger">北海道内のレンタカー予約はメールからは確認できませんでした（ヒットしたのは10月の大阪分のみで無関係）。ニセコ・洞爺湖間の移動手段は事前に手配状況をご確認ください。</div>
+  </section>
+
+  <section class="section" id="reservation">
+    <h2><span class="num">2</span>予約控え要点早見表</h2>
+    <p class="lede">Googleカレンダー・Gmailで確認できた確定情報のみを掲載。ヒルトンニセコビレッジは日付のみカレンダーに記載があり、予約番号等の詳細メールは見つかりませんでした。</p>
+    <div class="secret">
+      <table>
+        <tr><th>区分</th><th>内容</th><th>予約情報詳細</th></tr>
+        <tr><td>往路便</td><td>8/23(日) 羽田10:00発 → 新千歳<br>ユナイテッド航空</td><td>eTicket番号：0162336935785</td></tr>
+        <tr><td>復路便</td><td>8/30(日) 新千歳12:30発 → 羽田<br>ユナイテッド航空</td><td>4名で搭乗（カレンダーに「友梨追加する」とのメモあり。搭乗者登録状況を要確認）</td></tr>
+        <tr><td>宿泊1</td><td>ヒルトンニセコビレッジ<br>8/26(水) 1泊</td><td>カレンダーに宿泊日のみ記載。予約番号・室タイプ等は別途確認要</td></tr>
+        <tr><td>宿泊2</td><td>洞爺湖万世閣ホテル レイクサイドテラス<br>8/27(木)15:00チェックイン→8/28(金)チェックアウト</td><td>楽天トラベル予約番号 RYa0mp7fug<br>西館・湖側 和洋室（禁煙）<br>大人2名・子供2名（幼児1食事布団付＋幼児1布団不要）<br>1泊2食（夕食・朝食ビュッフェ）<br>TEL 0570-08-3500</td></tr>
+        <tr><td>宿泊3・4</td><td>札幌・義理実家<br>8/23-8/26／8/28-8/30</td><td>宿泊先手配不要。義理両親宅に滞在</td></tr>
+      </table>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="notice">入湯税・宿泊税は現地精算です（洞爺湖万世閣ホテル、大人1名1泊につき入湯税100円＋宿泊税、幼児も宿泊税は対象）。</div>
+      <div class="ok">洞爺湖万世閣ホテルの夕朝食は予約時に人数確定済み（大人2・幼児2）。当日の追加精算は基本なしの想定。</div>
+      <div class="danger">ヒルトンニセコビレッジと復路便4名分の登録状況は、出発前に公式サイト／メールで再確認してください。</div>
+    </div>
+  </section>
+
+  <section class="section" id="places">
+    <h2><span class="num">3</span>エリアガイド：子ども中心で過ごすヒント</h2>
+    <p class="lede">「何を見るか」より「子どもが伸び伸び過ごせるか」で選定。各施設は移動中・現地で入れ替え自由です。最新の営業状況は必ず公式サイトでご確認ください。</p>
+
+    <div class="place">
+      <div class="icon">🐻</div>
+      <div>
+        <h3>札幌：円山動物園</h3>
+        <div class="place-meta">
+          <span class="meta">屋内外あり</span><span class="meta">未就学児向き</span><span class="meta">ベビーカー可</span><span class="meta">提案</span>
+        </div>
+        <p>市街地から近く、規模も大きすぎないので未就学児2人連れでも回りやすい定番スポット。屋内展示もあるので雨天時の候補にもなる。</p>
+        <div class="fungrid">
+          <div class="fun"><b>友梨（お姉ちゃん）向け</b>好きな動物を自分で見つける「動物さがしゲーム」にするとやる気アップ。</div>
+          <div class="fun"><b>悠人（末っ子）向け</b>ベビーカーのまま回れる導線が多く、途中で寝ても安心。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🌳</div>
+      <div>
+        <h3>札幌：モエレ沼公園</h3>
+        <div class="place-meta">
+          <span class="meta">屋外中心</span><span class="meta">遊具充実</span><span class="meta">広大な芝生</span><span class="meta">提案</span>
+        </div>
+        <p>芸術的な公園全体が遊び場。芝生広場やガラスのピラミッド、大型遊具があり、思いきり走り回らせたい日に向く。</p>
+        <div class="fungrid">
+          <div class="fun"><b>持ち物</b>レジャーシート・水分・帽子。夏場は日陰の少ないエリアもあるので暑さ対策を。</div>
+          <div class="fun"><b>回り方</b>公園がとても広いため、目的の遊具エリアを事前に決めておくと迷わない。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🌽</div>
+      <div>
+        <h3>札幌：大通公園・とうきびワゴン</h3>
+        <div class="place-meta">
+          <span class="meta">気軽に立ち寄り</span><span class="meta">屋外</span><span class="meta">定番おやつ</span><span class="meta">提案</span>
+        </div>
+        <p>移動の合間や義理実家からの散歩ついでに立ち寄りやすい定番スポット。焼きとうもろこし・じゃがバターなど北海道らしいおやつを親子で。</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🚂</div>
+      <div>
+        <h3>札幌：サッポロさとらんど</h3>
+        <div class="place-meta">
+          <span class="meta">屋内施設あり</span><span class="meta">動物ふれあい</span><span class="meta">雨天も安心</span><span class="meta">提案</span>
+        </div>
+        <p>汽車型の乗り物や動物とのふれあいコーナーがあり、屋内施設も充実。雨や急な天候変化の日の予備プランとして便利。</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🐄</div>
+      <div>
+        <h3>ニセコ：高橋牧場ミルク工房</h3>
+        <div class="place-meta">
+          <span class="meta">牧場</span><span class="meta">ソフトクリーム</span><span class="meta">羊蹄山ビュー</span><span class="meta">提案</span>
+        </div>
+        <p>牧場の動物とふれあいながら、名物ソフトクリームやチーズを味わえる。ニセコ〜洞爺湖の移動中に立ち寄りやすい。</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🏔️</div>
+      <div>
+        <h3>ニセコ：道の駅 ニセコビュープラザ</h3>
+        <div class="place-meta">
+          <span class="meta">直売所</span><span class="meta">休憩に最適</span><span class="meta">お手洗い完備</span><span class="meta">提案</span>
+        </div>
+        <p>羊蹄山を望みながら休憩できる道の駅。地元野菜やお土産も揃うので、移動の合間の小休止にちょうどよい。</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">🚢</div>
+      <div>
+        <h3>洞爺湖：洞爺湖遊覧船</h3>
+        <div class="place-meta">
+          <span class="meta">湖上散策</span><span class="meta">ファミリー向け</span><span class="meta">所要40分程度目安</span><span class="meta">提案</span>
+        </div>
+        <p>ホテルのすぐ近くから乗船できる遊覧船。湖の景色を船上から楽しめ、小さな子どもでも比較的乗りやすい。</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="icon">♨️</div>
+      <div>
+        <h3>洞爺湖万世閣ホテル館内：大浴場「月の湯」「星の湯」</h3>
+        <div class="place-meta">
+          <span class="meta">館内施設</span><span class="meta">男女入替制</span><span class="meta">確定：宿泊者利用可</span>
+        </div>
+        <p>地下1階「月の湯」は北海道初のハイブリッドロウリュサウナ、最上階「星の湯」は洞爺湖を一望できる露天風呂。時間帯で男女が入れ替わるため、事前にチェック。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="packing">
+    <h2><span class="num">4</span>持ち物チェックリスト</h2>
+    <p class="lede">「羽田-新千歳の移動」「ニセコ・洞爺湖の宿泊」「子ども2人連れ」を踏まえて分類。8月の北海道は本州より朝晩涼しくなることがあるため、羽織るものを1枚多めに。</p>
+    <div class="grid3">
+      <div class="card">
+        <h3>移動・共通</h3>
+        <div class="checklist">
+          <div class="check"><span class="box"></span><span>航空券情報（eTicket番号控え）</span></div>
+          <div class="check"><span class="box"></span><span>身分証・保険証</span></div>
+          <div class="check"><span class="box"></span><span>モバイルバッテリー</span></div>
+          <div class="check"><span class="box"></span><span>羽織るもの（朝晩の冷え対策）</span></div>
+          <div class="check"><span class="box"></span><span>常備薬・母子手帳</span></div>
+          <div class="check"><span class="box"></span><span>ホテル予約確認メール（洞爺湖分）</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>ニセコ・洞爺湖泊まわり</h3>
+        <div class="checklist">
+          <div class="check"><span class="box"></span><span>着替え（1泊分×2ホテル）</span></div>
+          <div class="check"><span class="box"></span><span>大浴場用タオル・肌着</span></div>
+          <div class="check"><span class="box"></span><span>虫よけ・日焼け止め</span></div>
+          <div class="check"><span class="box"></span><span>入湯税・宿泊税用の現金</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>子ども（友梨・悠人）まわり</h3>
+        <div class="checklist">
+          <div class="check"><span class="box"></span><span>おむつ・おしりふき（悠人）</span></div>
+          <div class="check"><span class="box"></span><span>着替え多め・防水シート</span></div>
+          <div class="check"><span class="box"></span><span>お気に入りのおもちゃ・絵本</span></div>
+          <div class="check"><span class="box"></span><span>子ども用食器・スプーン</span></div>
+          <div class="check"><span class="box"></span><span>ベビーカー（義理実家に置き車あれば要確認）</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="hotels">
+    <h2><span class="num">5</span>宿泊詳細</h2>
+    <div class="grid2">
+      <div class="card sky">
+        <h3>ヒルトンニセコビレッジ｜8/26(水) 1泊</h3>
+        <p>カレンダーに宿泊日のみ登録されており、予約番号・部屋タイプ・確認メールは見当たりませんでした。ホテル公式サイトまたは予約サイトのマイページで予約内容を再確認のうえ、この欄を更新してください。</p>
+        <div class="danger">要確認：予約番号／チェックイン・アウト時刻／室タイプ／人数登録</div>
+      </div>
+      <div class="card green">
+        <h3>洞爺湖万世閣ホテル レイクサイドテラス｜8/27(木)-8/28(金)</h3>
+        <table>
+          <tr><th>項目</th><th>内容</th></tr>
+          <tr><td>住所</td><td>〒049-5721 北海道虻田郡洞爺湖町洞爺湖温泉21</td></tr>
+          <tr><td>電話番号</td><td>0570-08-3500</td></tr>
+          <tr><td>チェックイン</td><td>15:00</td></tr>
+          <tr><td>チェックアウト</td><td>8/28(金)（時刻はプラン規約参照）</td></tr>
+          <tr><td>部屋タイプ</td><td>西館・湖側 和洋室／バス・トイレ別（禁煙）</td></tr>
+          <tr><td>人数</td><td>大人2名・子供2名（幼児1食事布団付＋幼児1布団不要）</td></tr>
+          <tr><td>プラン</td><td>【85日前早期予約】スタンダードプラン 1泊2食（夕朝ビュッフェ）</td></tr>
+          <tr><td>予約番号</td><td>RYa0mp7fug（楽天トラベル）</td></tr>
+        </table>
+        <ul>
+          <li>大浴場は地下1階「月の湯」、最上階「星の湯」の2種類。時間帯で男女入替。</li>
+          <li>入湯税（大人1泊100円）・宿泊税は現地で別途精算。子どもも宿泊税の対象。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ops">
+    <h2><span class="num">6</span>当日オペレーション・注意点</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>移動まわりの要確認事項</h3>
+        <div class="checklist">
+          <div class="check"><span class="box"></span><span>札幌⇄ニセコ⇄洞爺湖の移動手段（レンタカー未確認）を確定させる</span></div>
+          <div class="check"><span class="box"></span><span>ヒルトンニセコビレッジの予約内容を再確認する</span></div>
+          <div class="check"><span class="box"></span><span>復路便（8/30）の搭乗者4名登録（友梨追加）を確認する</span></div>
+          <div class="check"><span class="box"></span><span>「8/29 13時からマイル予約」の予定内容を確認する</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>子連れ移動のコツ</h3>
+        <ul>
+          <li><b>空港：</b>羽田・新千歳ともに早めのチェックインで悠人のベビーカー対応をゆとりを持って。</li>
+          <li><b>車移動：</b>ニセコ⇄洞爺湖間は景色がよいので、こまめに休憩を挟んで飽きさせない工夫を。</li>
+          <li><b>宿泊：</b>大浴場は時間帯で男女入替のため、事前にホテルで時間を確認しておくと安心。</li>
+          <li><b>予備日：</b>8/25・8/29は予定を詰めすぎず、疲れに応じて自由に調整できるようにしてある。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacts">
+    <h2><span class="num">7</span>連絡先一覧</h2>
+    <table>
+      <tr><th>施設・便</th><th>連絡先</th><th>メモ</th></tr>
+      <tr><td>往路：ユナイテッド航空 8/23 羽田10:00発</td><td>eTicket 0162336935785</td><td>チケット控えを携帯・印刷しておく</td></tr>
+      <tr><td>復路：ユナイテッド航空 8/30 新千歳12:30発</td><td>4名分の予約情報（要確認）</td><td>友梨の搭乗者登録状況を要確認</td></tr>
+      <tr><td>ヒルトンニセコビレッジ</td><td>要確認</td><td>予約サイト・確認メールを再確認</td></tr>
+      <tr><td>洞爺湖万世閣ホテル レイクサイドテラス</td><td>TEL 0570-08-3500<br>〒049-5721 北海道虻田郡洞爺湖町洞爺湖温泉21</td><td>楽天トラベル予約番号 RYa0mp7fug</td></tr>
+      <tr><td>札幌・義理実家</td><td>現地で確認</td><td>8/23-26、8/28-30の宿泊拠点</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="sources">
+    <h2><span class="num">8</span>情報ソース・更新メモ</h2>
+    <p class="lede">作成日：2026年8月16日。Googleカレンダー・Gmailから確認できる範囲の情報をもとに作成しており、変更・追加があれば都度このしおりを更新してください。</p>
+    <ul class="source-list">
+      <li>Googleカレンダー：往路・復路便、ヒルトンニセコビレッジ、洞爺湖万世閣ホテルの日程</li>
+      <li>Gmail：楽天トラベル予約完了メール（洞爺湖万世閣ホテル レイクサイドテラス）</li>
+      <li>Gmail検索では、ヒルトンニセコビレッジの予約確認メール、北海道内のレンタカー予約メールは見つからず（要現地確認）</li>
+      <li>ユーザーからの補足：札幌滞在中は義理実家に宿泊。空き日程は子ども中心プランとして本しおりで提案</li>
+    </ul>
+    <div class="footer">このしおりは家族内利用を前提に、旅の予定を分かりやすくまとめたものです。「提案」欄は目安であり、現地の天候・子どもの体調にあわせて自由に入れ替えてください。</div>
+  </section>
+</div>
+</body>
+</html>
